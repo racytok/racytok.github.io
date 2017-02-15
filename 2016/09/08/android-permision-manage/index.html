@@ -1,0 +1,706 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="一.Android6.0权限新特性
+在Android 6.0版本之前权限都是一条龙服务的，只要用户安装完，AndroidManifest清单上申请的权限都会被系统默认授权，并且授权后也撤销不了。这样的弊端在哪里呢？有些权限可能用户觉得不需要，比如他不想有通知的权限，不想受到通知的干扰，那么他就不能屏蔽通知，就是不需要的权限，他去不掉，自主权不在他那边。还有一些情况是，一些恶意程序，会利用这个权限默">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android 6.0 动态权限管理">
+<meta property="og:url" content="http://racytok.github.io/2016/09/08/android-permision-manage/index.html">
+<meta property="og:site_name" content="小记">
+<meta property="og:description" content="一.Android6.0权限新特性
+在Android 6.0版本之前权限都是一条龙服务的，只要用户安装完，AndroidManifest清单上申请的权限都会被系统默认授权，并且授权后也撤销不了。这样的弊端在哪里呢？有些权限可能用户觉得不需要，比如他不想有通知的权限，不想受到通知的干扰，那么他就不能屏蔽通知，就是不需要的权限，他去不掉，自主权不在他那边。还有一些情况是，一些恶意程序，会利用这个权限默">
+<meta property="og:image" content="http://p1.bpimg.com/1949/aedf4c681e933b22.jpg">
+<meta property="og:image" content="http://p1.bpimg.com/1949/60b6ad0b8f369cce.jpg">
+<meta property="og:image" content="http://p1.bpimg.com/1949/e5f5bc94aa50d9b4.jpg">
+<meta property="og:updated_time" content="2016-09-27T06:26:44.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android 6.0 动态权限管理">
+<meta name="twitter:description" content="一.Android6.0权限新特性
+在Android 6.0版本之前权限都是一条龙服务的，只要用户安装完，AndroidManifest清单上申请的权限都会被系统默认授权，并且授权后也撤销不了。这样的弊端在哪里呢？有些权限可能用户觉得不需要，比如他不想有通知的权限，不想受到通知的干扰，那么他就不能屏蔽通知，就是不需要的权限，他去不掉，自主权不在他那边。还有一些情况是，一些恶意程序，会利用这个权限默">
+<meta name="twitter:image" content="http://p1.bpimg.com/1949/aedf4c681e933b22.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://racytok.github.io/2016/09/08/android-permision-manage/"/>
+
+
+  <title> Android 6.0 动态权限管理 | 小记 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?f285b0329244c0997cf3f25f253aeed4";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">小记</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">不积小流无以成江海。</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android 6.0 动态权限管理
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-09-08T18:28:57+08:00" content="2016-09-08">
+              2016-09-08
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Android技术文章/" itemprop="url" rel="index">
+                    <span itemprop="name">Android技术文章</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/09/08/android-permision-manage/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/08/android-permision-manage/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="一-Android6-0权限新特性"><a href="#一-Android6-0权限新特性" class="headerlink" title="一.Android6.0权限新特性"></a>一.Android6.0权限新特性</h2><ol>
+<li><p>在Android 6.0版本之前<br>权限都是一条龙服务的，只要用户安装完，AndroidManifest清单上申请的权限都会被系统默认授权，并且授权后也撤销不了。这样的弊端在哪里呢？有些权限可能用户觉得不需要，比如他不想有通知的权限，不想受到通知的干扰，那么他就不能屏蔽通知，就是不需要的权限，他去不掉，自主权不在他那边。还有一些情况是，一些恶意程序，会利用这个权限默认授权，进行恶意获取用户数据和攻击。所以Android 6.0版本，一方面让用户更加容易的控制自己的隐私，一方面需要重新适配应用权限。</p>
+</li>
+<li><p>Android 6.0<br>采用新的权限模型，只有在需要权限的时候，才告知用户是否授权，是在runtime时候授权，而不是在原来安装的时候 ，同时默认情况下每次在运行时打开页面时候，需要先检查是否有所需要的权限申请。这样的用户的自主性提高很多，比如用户可以给APP赋予摄像的权限，但是可以拒绝记录设备位置的权限，就是怕位置信息上传等等。</p>
+</li>
+<li><p>在API 23中，权限满足的标准流程：<br><img src="http://p1.bpimg.com/1949/aedf4c681e933b22.jpg" alt="流程图"><br>但这里有个问题，那就是在系统授权弹窗环节，提醒框会有个不再提示的复选框，如果用户点击不太提示，并拒绝授权，那么再下次授权的时候，系统授权弹窗的提示框就不会在提示，所以我们很有必要需要自定义权限弹窗提示框，那么流程图就变成如下了。</p>
+</li>
+</ol>
+<p><img src="http://p1.bpimg.com/1949/60b6ad0b8f369cce.jpg" alt="流程图"></p>
+<h2 id="二-权限类型"><a href="#二-权限类型" class="headerlink" title="二.权限类型"></a>二.权限类型</h2><p><img src="http://p1.bpimg.com/1949/e5f5bc94aa50d9b4.jpg" alt="流程图"><br>我们可以看到整个权限里，可以分为系统权限和特殊权限授权。系统权限中，又分为normal和dangerous类型。<br> normal：这个权限类型并不直接威胁到用户的隐私，可以直接在manifest清单里注册，系统会帮我们默认授权的。<br> dangerous：这个可以直接给app访问用户一些敏感的数据，不仅需要在manifest清单里注册，同时在使用的时候，需要向系统请求授权。<br> 值得注意一点，这里有特殊权限授权的区别，分别是SYSTEM_ALERT_WINDOW 和 WRITE_SETTINGS，虽然这两个权限也是属于dangerous权限类型，但是这两个授权请求方式和其他dangerous权限是不一样的，需要特殊处理 。<br>（1）    Normal权限（正常权限）<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line">		ACCESS_LOCATION_EXTRA_COMMANDS</div><div class="line">ACCESS_NETWORK_STATE</div><div class="line">ACCESS_NOTIFICATION_POLICY</div><div class="line">ACCESS_WIFI_STATE</div><div class="line">BLUETOOTH</div><div class="line">BLUETOOTH_ADMIN</div><div class="line">BROADCAST_STICKY</div><div class="line">CHANGE_NETWORK_STATE</div><div class="line">CHANGE_WIFI_MULTICAST_STATE</div><div class="line">CHANGE_WIFI_STATE</div><div class="line">DISABLE_KEYGUARD</div><div class="line">EXPAND_STATUS_BAR</div><div class="line">GET_PACKAGE_SIZE</div><div class="line">INSTALL_SHORTCUT</div><div class="line">INTERNET</div><div class="line">KILL_BACKGROUND_PROCESSES</div><div class="line">MODIFY_AUDIO_SETTINGS</div><div class="line">NFC</div><div class="line">READ_SYNC_SETTINGS</div><div class="line">READ_SYNC_STATS</div><div class="line">RECEIVE_BOOT_COMPLETED</div><div class="line">REORDER_TASKS</div><div class="line">REQUEST_INSTALL_PACKAGES</div><div class="line">SET_ALARM</div><div class="line">SET_TIME_ZONE</div><div class="line">SET_WALLPAPER</div><div class="line">SET_WALLPAPER_HINTS</div><div class="line">TRANSMIT_IR</div><div class="line">UNINSTALL_SHORTCUT</div><div class="line">USE_FINGERPRINT</div><div class="line">VIBRATE</div><div class="line">WAKE_LOCK</div><div class="line">WRITE_SYNC_SETTINGS</div></pre></td></tr></table></figure></p>
+<p>（2）dangerous权限（危险权限）<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line">group:android.permission-group.CONTACTS</div><div class="line">  permission:android.permission.WRITE_CONTACTS</div><div class="line">  permission:android.permission.GET_ACCOUNTS</div><div class="line">  permission:android.permission.READ_CONTACTS</div><div class="line"></div><div class="line">group:android.permission-group.PHONE</div><div class="line">  permission:android.permission.READ_CALL_LOG</div><div class="line">  permission:android.permission.READ_PHONE_STATE</div><div class="line">  permission:android.permission.CALL_PHONE</div><div class="line">  permission:android.permission.WRITE_CALL_LOG</div><div class="line">  permission:android.permission.USE_SIP</div><div class="line">  permission:android.permission.PROCESS_OUTGOING_CALLS</div><div class="line">  permission:com.android.voicemail.permission.ADD_VOICEMAIL</div><div class="line"></div><div class="line">group:android.permission-group.CALENDAR</div><div class="line">  permission:android.permission.READ_CALENDAR</div><div class="line">  permission:android.permission.WRITE_CALENDAR</div><div class="line"></div><div class="line">group:android.permission-group.CAMERA</div><div class="line">  permission:android.permission.CAMERA</div><div class="line"></div><div class="line">group:android.permission-group.SENSORS</div><div class="line">  permission:android.permission.BODY_SENSORS</div><div class="line"></div><div class="line">group:android.permission-group.LOCATION</div><div class="line">  permission:android.permission.ACCESS_FINE_LOCATION</div><div class="line">  permission:android.permission.ACCESS_COARSE_LOCATION</div><div class="line"></div><div class="line">group:android.permission-group.STORAGE</div><div class="line">  permission:android.permission.READ_EXTERNAL_STORAGE</div><div class="line">  permission:android.permission.WRITE_EXTERNAL_STORAGE</div><div class="line"></div><div class="line">group:android.permission-group.MICROPHONE</div><div class="line">  permission:android.permission.RECORD_AUDIO</div><div class="line"></div><div class="line">group:android.permission-group.SMS</div><div class="line">  permission:android.permission.READ_SMS</div><div class="line">  permission:android.permission.RECEIVE_WAP_PUSH</div><div class="line">  permission:android.permission.RECEIVE_MMS</div><div class="line">  permission:android.permission.RECEIVE_SMS</div><div class="line">  permission:android.permission.SEND_SMS</div><div class="line">  permission:android.permission.READ_CELL_BROADCASTS</div></pre></td></tr></table></figure></p>
+<h2 id="三-动态权限管理"><a href="#三-动态权限管理" class="headerlink" title="三.动态权限管理"></a>三.动态权限管理</h2><p>Step 1: 第一步和以前没什么两样，依然是在AndroidManifest添加权限声明。<br>Step 2: 检查权限：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (ContextCompat.checkSelfPermission(thisActivity,</div><div class="line">                Manifest.permission.READ_CONTACTS)</div><div class="line">        != PackageManager.PERMISSION_GRANTED) &#123;</div><div class="line">&#125;<span class="keyword">else</span>&#123;</div><div class="line">    <span class="comment">//</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>ContextCompat.checkSelfPermission，主要用于检测某个权限是否已经被授予，方法返回值为PackageManager.PERMISSION_DENIED或者PackageManager.PERMISSION_GRANTED。当返回DENIED就需要进行申请授权了。</p>
+</blockquote>
+<p>Step 3:申请授权<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">ActivityCompat.requestPermissions(thisActivity,</div><div class="line">         <span class="keyword">new</span> String[]&#123;Manifest.permission.READ_CONTACTS&#125;,</div><div class="line">                MY_PERMISSIONS_REQUEST_READ_CONTACTS);</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>该方法是异步的，第一个参数是Context；第二个参数是需要申请的权限的字符串数组；第三个参数为requestCode，主要用于回调的时候检测。可以从方法名requestPermissions以及第二个参数看出，是支持一次性申请多个权限的，系统会通过对话框逐一询问用户是否授权。</p>
+</blockquote>
+<p>Step 4：处理权限申请回调<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onRequestPermissionsResult</span><span class="params">(<span class="keyword">int</span> requestCode,</span></span></div><div class="line">        String permissions[], <span class="keyword">int</span>[] grantResults) &#123;</div><div class="line">    <span class="keyword">switch</span> (requestCode) &#123;</div><div class="line">        <span class="keyword">case</span> MY_PERMISSIONS_REQUEST_READ_CONTACTS: &#123;</div><div class="line">            <span class="comment">//如果请求被取消，则会返回空</span></div><div class="line">            <span class="keyword">if</span>(grantResults.length&gt;<span class="number">0</span>&amp;&amp;grantResults[<span class="number">0</span>]== PackageManager.PERMISSION_GRANTED)</div><div class="line"> &#123;</div><div class="line"></div><div class="line">                <span class="comment">// 权限已同意，在这里可以进行联系人查看操作</span></div><div class="line"></div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line"></div><div class="line">                <span class="comment">// 权限被用户拒绝</span></div><div class="line">            &#125;</div><div class="line">            <span class="keyword">return</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>对于权限的申请结果，首先验证requestCode定位到你的申请，然后验证grantResults对应于申请的结果，这里的数组对应于申请时的第二个权限字符串数组。如果你同时申请两个权限，那么grantResults的length就为2，分别记录你两个权限的申请结果。如果申请成功，就可以做你的事情了~</p>
+</blockquote>
+<p>Ok，到此权限申请的基本步骤就完成了。然而大家发现这些都是系统的提示，如何让用户能接受权限申请呢？<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Should we show an explanation?</span></div><div class="line"><span class="keyword">if</span> (ActivityCompat.shouldShowRequestPermissionRationale(thisActivity,</div><div class="line">        Manifest.permission.READ_CONTACTS)) </div><div class="line">    <span class="comment">// Show an expanation to the user *asynchronously* -- don't block</span></div><div class="line">    <span class="comment">// this thread waiting for the user's response! After the user</span></div><div class="line">    <span class="comment">// sees the explanation, try again to request the permission.</span></div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>这个API主要用于给用户一个申请权限的解释，该方法只有在用户在上一次已经拒绝过你的这个权限申请。也就是说，用户已经拒绝一次了，你又弹个授权框，你需要给用户一个解释，为什么要授权，则使用该方法。</p>
+</blockquote>
+<p>综上，一个完整的使用过程就有了。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Here, thisActivity is the current activity</span></div><div class="line"><span class="keyword">if</span> (ContextCompat.checkSelfPermission(thisActivity,</div><div class="line">                Manifest.permission.READ_CONTACTS)</div><div class="line">        != PackageManager.PERMISSION_GRANTED) &#123;</div><div class="line"></div><div class="line">    <span class="comment">// Should we show an explanation?</span></div><div class="line">    <span class="keyword">if</span> (ActivityCompat.shouldShowRequestPermissionRationale(thisActivity,</div><div class="line">            Manifest.permission.READ_CONTACTS)) &#123;</div><div class="line"></div><div class="line">        <span class="comment">// Show an expanation to the user *asynchronously* -- don't block</span></div><div class="line">        <span class="comment">// this thread waiting for the user's response! After the user</span></div><div class="line">        <span class="comment">// sees the explanation, try again to request the permission.</span></div><div class="line"></div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line"></div><div class="line">        <span class="comment">// No explanation needed, we can request the permission.</span></div><div class="line"></div><div class="line">        ActivityCompat.requestPermissions(thisActivity,</div><div class="line">                <span class="keyword">new</span> String[]&#123;Manifest.permission.READ_CONTACTS&#125;,</div><div class="line">                MY_PERMISSIONS_REQUEST_READ_CONTACTS);</div><div class="line"></div><div class="line">        <span class="comment">// MY_PERMISSIONS_REQUEST_READ_CONTACTS is an</span></div><div class="line">        <span class="comment">// app-defined int constant. The callback method gets the</span></div><div class="line">        <span class="comment">// result of the request.</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="附：一些流行的权限管理库"><a href="#附：一些流行的权限管理库" class="headerlink" title="附：一些流行的权限管理库"></a>附：一些流行的权限管理库</h2><blockquote>
+<ul>
+<li><a href="https://github.com/hongyangAndroid/MPermissions" target="_blank" rel="external">https://github.com/hongyangAndroid/MPermissions</a></li>
+<li><a href="https://github.com/mylhyl/AndroidAcp" target="_blank" rel="external">https://github.com/mylhyl/AndroidAcp</a> 【推荐】</li>
+<li><a href="https://github.com/hotchemi/PermissionsDispatcher" target="_blank" rel="external">https://github.com/hotchemi/PermissionsDispatcher</a></li>
+<li><a href="https://github.com/ParkSangGwon/TedPermission" target="_blank" rel="external">https://github.com/ParkSangGwon/TedPermission</a></li>
+</ul>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>Enjoy it? Donate me! 欣赏此文？求支持，求鼓励！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/wxpay.png" alt="微扬的嘴角 WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/alipay.png" alt="微扬的嘴角 Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/09/08/tofriends/" rel="next" title="向大家问好">
+                <i class="fa fa-chevron-left"></i> 向大家问好
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/09/27/wechat-little-project/" rel="prev" title="微信小程序（应用号）开发">
+                微信小程序（应用号）开发 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/09/08/android-permision-manage/"
+           data-title="Android 6.0 动态权限管理" data-url="http://racytok.github.io/2016/09/08/android-permision-manage/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/myheadimg.png"
+               alt="微扬的嘴角" />
+          <p class="site-author-name" itemprop="name">微扬的嘴角</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">12</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/racytok" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/80901341" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一-Android6-0权限新特性"><span class="nav-number">1.</span> <span class="nav-text">一.Android6.0权限新特性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二-权限类型"><span class="nav-number">2.</span> <span class="nav-text">二.权限类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三-动态权限管理"><span class="nav-number">3.</span> <span class="nav-text">三.动态权限管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#附：一些流行的权限管理库"><span class="nav-number">4.</span> <span class="nav-text">附：一些流行的权限管理库</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">微扬的嘴角</span>
+</div>
+
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"nobibiwang"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>

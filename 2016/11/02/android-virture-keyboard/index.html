@@ -1,0 +1,674 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="在android开发中，我们往往对于虚拟键盘问题比较头疼，其实我们可以通过屏幕尺寸的差值来判断是否有虚拟键盘，从而分情况处理。
+1.不带虚拟键盘的手机，我们是这样获取屏幕高度的。123456789/**   * 获取屏幕尺寸，但是不包括虚拟功能高度   *   * @return   */  public int getNoHasVirtualKey() &amp;#123;      int heigh">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android 获取虚拟按键高度">
+<meta property="og:url" content="http://racytok.github.io/2016/11/02/android-virture-keyboard/index.html">
+<meta property="og:site_name" content="小记">
+<meta property="og:description" content="在android开发中，我们往往对于虚拟键盘问题比较头疼，其实我们可以通过屏幕尺寸的差值来判断是否有虚拟键盘，从而分情况处理。
+1.不带虚拟键盘的手机，我们是这样获取屏幕高度的。123456789/**   * 获取屏幕尺寸，但是不包括虚拟功能高度   *   * @return   */  public int getNoHasVirtualKey() &amp;#123;      int heigh">
+<meta property="og:updated_time" content="2016-11-02T03:32:12.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android 获取虚拟按键高度">
+<meta name="twitter:description" content="在android开发中，我们往往对于虚拟键盘问题比较头疼，其实我们可以通过屏幕尺寸的差值来判断是否有虚拟键盘，从而分情况处理。
+1.不带虚拟键盘的手机，我们是这样获取屏幕高度的。123456789/**   * 获取屏幕尺寸，但是不包括虚拟功能高度   *   * @return   */  public int getNoHasVirtualKey() &amp;#123;      int heigh">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://racytok.github.io/2016/11/02/android-virture-keyboard/"/>
+
+
+  <title> Android 获取虚拟按键高度 | 小记 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?f285b0329244c0997cf3f25f253aeed4";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">小记</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">不积小流无以成江海。</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android 获取虚拟按键高度
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-11-02T11:28:31+08:00" content="2016-11-02">
+              2016-11-02
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Android技术文章/" itemprop="url" rel="index">
+                    <span itemprop="name">Android技术文章</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/11/02/android-virture-keyboard/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/02/android-virture-keyboard/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在android开发中，我们往往对于虚拟键盘问题比较头疼，其实我们可以通过屏幕尺寸的差值来判断是否有虚拟键盘，从而分情况处理。</p>
+<h3 id="1-不带虚拟键盘的手机，我们是这样获取屏幕高度的。"><a href="#1-不带虚拟键盘的手机，我们是这样获取屏幕高度的。" class="headerlink" title="1.不带虚拟键盘的手机，我们是这样获取屏幕高度的。"></a>1.不带虚拟键盘的手机，我们是这样获取屏幕高度的。</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">   * 获取屏幕尺寸，但是不包括虚拟功能高度</div><div class="line">   *</div><div class="line">   * <span class="doctag">@return</span></div><div class="line">   */</div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getNoHasVirtualKey</span><span class="params">()</span> </span>&#123;</div><div class="line">      <span class="keyword">int</span> height = getWindowManager().getDefaultDisplay().getHeight();</div><div class="line">      <span class="keyword">return</span> height;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<h3 id="2-带有虚拟键盘的情况，我们通过反射获取高度。"><a href="#2-带有虚拟键盘的情况，我们通过反射获取高度。" class="headerlink" title="2.带有虚拟键盘的情况，我们通过反射获取高度。"></a>2.带有虚拟键盘的情况，我们通过反射获取高度。</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">    * 通过反射，获取包含虚拟键的整体屏幕高度</div><div class="line">    *</div><div class="line">    * <span class="doctag">@return</span></div><div class="line">    */</div><div class="line">   <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">getHasVirtualKey</span><span class="params">()</span> </span>&#123;</div><div class="line">       <span class="keyword">int</span> dpi = <span class="number">0</span>;</div><div class="line">       Display display = getWindowManager().getDefaultDisplay();</div><div class="line">       DisplayMetrics dm = <span class="keyword">new</span> DisplayMetrics();</div><div class="line">       <span class="meta">@SuppressWarnings</span>(<span class="string">"rawtypes"</span>)</div><div class="line">       Class c;</div><div class="line">       <span class="keyword">try</span> &#123;</div><div class="line">           c = Class.forName(<span class="string">"android.view.Display"</span>);</div><div class="line">           <span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</div><div class="line">           Method method = c.getMethod(<span class="string">"getRealMetrics"</span>, DisplayMetrics.class);</div><div class="line">           method.invoke(display, dm);</div><div class="line">           dpi = dm.heightPixels;</div><div class="line">       &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">           e.printStackTrace();</div><div class="line">       &#125;</div><div class="line">       <span class="keyword">return</span> dpi;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>我们在代码编写时，真正的内容高度其实是屏幕高度减去虚拟键盘的高度，所以虚拟按键的高度： getHasVirtualKey() - getNoHasVirtualKey()</p>
+</blockquote>
+<p>我们写个方法来测试下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">    * 获取虚拟键的高度</div><div class="line">    */</div><div class="line">   <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">getVirtuakeyHight</span><span class="params">()</span> </span>&#123;</div><div class="line">       Logger.d(<span class="string">"不包含虚拟键的高度="</span> + getNoHasVirtualKey());</div><div class="line">       Logger.d(<span class="string">"包含虚拟键的高度="</span> + getHasVirtualKey());</div><div class="line">       Logger.d(<span class="string">"虚拟键的高度="</span> + (getHasVirtualKey() - getNoHasVirtualKey()));</div><div class="line">   &#125;</div></pre></td></tr></table></figure></p>
+<p>测试结果：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">不包含虚拟键的高度=<span class="number">1776</span></div><div class="line">包含虚拟键的高度=<span class="number">1920</span></div><div class="line">虚拟键的高度=<span class="number">144</span></div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>Enjoy it? Donate me! 欣赏此文？求支持，求鼓励！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/wxpay.png" alt="微扬的嘴角 WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/alipay.png" alt="微扬的嘴角 Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/11/01/android-input-treasure/" rel="next" title="Android填坑之输入框被挡问题">
+                <i class="fa fa-chevron-left"></i> Android填坑之输入框被挡问题
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/11/03/android-blankapk-sign/" rel="prev" title="Android 如何给空包签名">
+                Android 如何给空包签名 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/11/02/android-virture-keyboard/"
+           data-title="Android 获取虚拟按键高度" data-url="http://racytok.github.io/2016/11/02/android-virture-keyboard/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/myheadimg.png"
+               alt="微扬的嘴角" />
+          <p class="site-author-name" itemprop="name">微扬的嘴角</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">12</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/racytok" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/80901341" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-不带虚拟键盘的手机，我们是这样获取屏幕高度的。"><span class="nav-number">1.</span> <span class="nav-text">1.不带虚拟键盘的手机，我们是这样获取屏幕高度的。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-带有虚拟键盘的情况，我们通过反射获取高度。"><span class="nav-number">2.</span> <span class="nav-text">2.带有虚拟键盘的情况，我们通过反射获取高度。</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">微扬的嘴角</span>
+</div>
+
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"nobibiwang"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
