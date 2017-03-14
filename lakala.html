@@ -94,7 +94,7 @@
 <meta property="og:description" content="MPOS收款宝5.0.0贷款模块技术文档一、    背景拉卡拉收款宝中贷款模块是一个比较重要的模块，由于一直没有对应技术文档，对于任何一个新接触该模块的开发人员来说，需要一定的时间去了解和熟悉，所以技术文档的产生就显的尤为重要了。
 二、    阅读对象拉卡拉收款宝Android客户端开发人员。
 三、    模块主要内容贷款模块目前包括：功夫贷、51人品贷、平安普惠、易分期、替你还、一日贷。目前在项">
-<meta property="og:updated_time" content="2017-03-14T06:06:50.000Z">
+<meta property="og:updated_time" content="2017-03-14T06:37:00.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="小记">
 <meta name="twitter:description" content="MPOS收款宝5.0.0贷款模块技术文档一、    背景拉卡拉收款宝中贷款模块是一个比较重要的模块，由于一直没有对应技术文档，对于任何一个新接触该模块的开发人员来说，需要一定的时间去了解和熟悉，所以技术文档的产生就显的尤为重要了。
@@ -267,7 +267,10 @@
 <h4 id="C：平安普惠"><a href="#C：平安普惠" class="headerlink" title="C：平安普惠"></a>C：平安普惠</h4><p>前置：百度定位，定位成功，执行获取商户信息[1]</p>
 <blockquote>
 <p>[1] <a href="http://10.7.111.32:8280/mpos_21669/api/v1.0/getMerchantInfo" target="_blank" rel="external">http://10.7.111.32:8280/mpos_21669/api/v1.0/getMerchantInfo</a><br>根据返回的状态，<br>业务可用调用[2]，其他的弹提示：业务不可用，商户开通未满一月，交易需结算后才能申请，身份验证后才能申请，结算账户为对攻账户不能用，需要完善信息。</p>
-<p>[2] 立即申请校验<br><a href="http://10.7.111.32:8280/mpos_21669/api/v1.0/loan/applyCheck" target="_blank" rel="external">http://10.7.111.32:8280/mpos_21669/api/v1.0/loan/applyCheck</a><br>参数：<br>{“platform”:”android”,”loanProId”:”DK_PA”,”loanMerId”:”DK_PA”,”timeStamp”:”1489463689935”,”accessToken”:”9499297e16500a16d121237688d1865e”,”deviceModel”:”MI 3”,”refreshToken”:”7a496d5248251ccc7f86c63ebf0dfed6”,”guid”:”53db8a5391dca839852573d0f9e39097”,”loanRule”:”eyJydWxlSnNvbiI6eyJCbGFja2xpc3QiOiIxIiB9fQ==”,”gesturePwd”:”0”,”loanLogo”:”http:\/\/download.lakala.com.cn\/\/lklmbl\/dkadv\/ds\/dk_gfd_p_logo.png”,”subChannelId”:”10000027”,”deviceId”:”864595027657851”,”loanName”:”平安普惠”}</p>
+<p>[2] 立即申请校验<br><a href="http://10.7.111.32:8280/mpos_21669/api/v1.0/loan/applyCheck" target="_blank" rel="external">http://10.7.111.32:8280/mpos_21669/api/v1.0/loan/applyCheck</a></p>
+</blockquote>
+<p>参数：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;<span class="string">"platform"</span>:<span class="string">"android"</span>,<span class="string">"loanProId"</span>:<span class="string">"DK_PA"</span>,<span class="string">"loanMerId"</span>:<span class="string">"DK_PA"</span>,<span class="string">"timeStamp"</span>:<span class="string">"1489463689935"</span>,<span class="string">"accessToken"</span>:<span class="string">"9499297e16500a16d121237688d1865e"</span>,<span class="string">"deviceModel"</span>:<span class="string">"MI 3"</span>,<span class="string">"refreshToken"</span>:<span class="string">"7a496d5248251ccc7f86c63ebf0dfed6"</span>,<span class="string">"guid"</span>:<span class="string">"53db8a5391dca839852573d0f9e39097"</span>,<span class="string">"loanRule"</span>:<span class="string">"eyJydWxlSnNvbiI6eyJCbGFja2xpc3QiOiIxIiB9fQ=="</span>,<span class="string">"gesturePwd"</span>:<span class="string">"0"</span>,<span class="string">"loanLogo"</span>:<span class="string">"http:\/\/download.lakala.com.cn\/\/lklmbl\/dkadv\/ds\/dk_gfd_p_logo.png"</span>,<span class="string">"subChannelId"</span>:<span class="string">"10000027"</span>,<span class="string">"deviceId"</span>:<span class="string">"864595027657851"</span>,<span class="string">"loanName"</span>:<span class="string">"平安普惠"</span>&#125;</div></pre></td></tr></table></figure></p>
+<blockquote>
 <p>[3]校验成功，调用平安普惠SDK<br>new KeplerUtil().enterKepler((AppBaseActivity) mContext,merName);<br>测试环境，需要选择设备。生产环境设备ID是后台返的<br>getLoginInfo（Activity context）<br>需要的参数数:<br>Latitude,Longitude,City,Address,ChannelId,Mobile,CustNamem,loginId</p>
 <p>[4]登录成功进入平安普惠</p>
 </blockquote>
