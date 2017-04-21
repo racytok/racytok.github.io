@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="微扬的嘴角,blog,hexo,next主题,个人博客" />
+  <meta name="keywords" content="Android," />
 
 
 
@@ -84,13 +84,27 @@
 
 
 
+<meta name="description" content="更新了Android Studio 2.3,发布版本的时候，发现编译多了选择如下
+
+问题描述可以看到多了签名版本的选择，因为刚开始默认勾选的v2(Full APK Signature)，没多想一路next下去了结果在测试的6.0 我的4.4上都安装失败。
+问题解析(v1和v2)Android 7.0中引入了APK Signature Scheme v2，v1呢是jar Signature来自JDK">
 <meta property="og:type" content="article">
-<meta property="og:title" content="android-v2.3-signed">
+<meta property="og:title" content="Android Studio 2.3 签名后无法安装问题">
 <meta property="og:url" content="http://racytok.github.io/2017/04/21/android-v2-3-signed/index.html">
 <meta property="og:site_name" content="小记">
-<meta property="og:updated_time" content="2017-04-21T03:11:06.000Z">
+<meta property="og:description" content="更新了Android Studio 2.3,发布版本的时候，发现编译多了选择如下
+
+问题描述可以看到多了签名版本的选择，因为刚开始默认勾选的v2(Full APK Signature)，没多想一路next下去了结果在测试的6.0 我的4.4上都安装失败。
+问题解析(v1和v2)Android 7.0中引入了APK Signature Scheme v2，v1呢是jar Signature来自JDK">
+<meta property="og:image" content="https://raw.githubusercontent.com/racytok/racytok.github.io/master/images/WX2017042111420.png">
+<meta property="og:updated_time" content="2017-04-21T03:22:41.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="android-v2.3-signed">
+<meta name="twitter:title" content="Android Studio 2.3 签名后无法安装问题">
+<meta name="twitter:description" content="更新了Android Studio 2.3,发布版本的时候，发现编译多了选择如下
+
+问题描述可以看到多了签名版本的选择，因为刚开始默认勾选的v2(Full APK Signature)，没多想一路next下去了结果在测试的6.0 我的4.4上都安装失败。
+问题解析(v1和v2)Android 7.0中引入了APK Signature Scheme v2，v1呢是jar Signature来自JDK">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/racytok/racytok.github.io/master/images/WX2017042111420.png">
 
 
 
@@ -114,7 +128,7 @@
   <link rel="canonical" href="http://racytok.github.io/2017/04/21/android-v2-3-signed/"/>
 
 
-  <title> android-v2.3-signed | 小记 </title>
+  <title> Android Studio 2.3 签名后无法安装问题 | 小记 </title>
 </head>
 
 <body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
@@ -238,7 +252,7 @@
             
             
               
-                android-v2.3-signed
+                Android Studio 2.3 签名后无法安装问题
               
             
           </h1>
@@ -255,6 +269,25 @@
             </time>
           </span>
 
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Android技术/" itemprop="url" rel="index">
+                    <span itemprop="name">Android技术</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
           
 
           
@@ -282,7 +315,15 @@
       
 
       
-        
+        <p>更新了Android Studio 2.3,发布版本的时候，发现编译多了选择如下</p>
+<p><img src="https://raw.githubusercontent.com/racytok/racytok.github.io/master/images/WX2017042111420.png" alt="描述图"></p>
+<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>可以看到多了签名版本的选择，因为刚开始默认勾选的v2(Full APK Signature)，没多想一路next下去了<br>结果在测试的6.0 我的4.4上都安装失败。</p>
+<h2 id="问题解析-v1和v2"><a href="#问题解析-v1和v2" class="headerlink" title="问题解析(v1和v2)"></a>问题解析(v1和v2)</h2><p>Android 7.0中引入了APK Signature Scheme v2，v1呢是jar Signature来自JDK</p>
+<p>V1：应该是通过ZIP条目进行验证，这样可以APK 签署后可进行许多修改 - 可以移动甚至重新压缩文件。<br>V2：验证压缩文件的所有字节，而不是单个 ZIP 条目，因此，在签名后无法再更改(包括 zipalign)。正因如此，现在，在编译过程中，我们将压缩、调整和签署合并成一步完成。</p>
+<p>好处显而易见，更安全而且新的签名可缩短在设备上进行验证的时间（不需要费时地解压缩然后验证），从而加快应用安装速度。</p>
+<h2 id="解决方案一"><a href="#解决方案一" class="headerlink" title="解决方案一"></a>解决方案一</h2><p>v1和v2的签名使用<br>只勾选v1签名并不会影响什么，但是在7.0上不会使用更安全的验证方式<br>只勾选V2签名7.0以下会直接安装完显示未安装，7.0以上则使用了V2的方式验证<br>同时勾选V1和V2则所有机型都没问题</p>
+<h2 id="解决方案二"><a href="#解决方案二" class="headerlink" title="解决方案二"></a>解决方案二</h2><p>在app的build.gradle的android标签下加入如下<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">signingConfigs &#123;</div><div class="line">    debug &#123;</div><div class="line">        v1SigningEnabled <span class="keyword">true</span></div><div class="line">        v2SigningEnabled <span class="keyword">true</span></div><div class="line">    &#125;</div><div class="line">    release &#123;</div><div class="line">        v1SigningEnabled <span class="keyword">true</span></div><div class="line">        v2SigningEnabled <span class="keyword">true</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+
       
     </div>
 
@@ -323,6 +364,12 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+        </div>
+      
 
       
         <div class="post-nav">
@@ -361,7 +408,7 @@
   <div class="comments" id="comments">
     
       <div class="ds-thread" data-thread-key="2017/04/21/android-v2-3-signed/"
-           data-title="android-v2.3-signed" data-url="http://racytok.github.io/2017/04/21/android-v2-3-signed/">
+           data-title="Android Studio 2.3 签名后无法安装问题" data-url="http://racytok.github.io/2017/04/21/android-v2-3-signed/">
       </div>
     
   </div>
@@ -414,7 +461,7 @@
           
             <div class="site-state-item site-state-categories">
               
-                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-count">9</span>
                 <span class="site-state-item-name">分类</span>
               
             </div>
@@ -472,7 +519,7 @@
               
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#问题描述"><span class="nav-number">1.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#问题解析-v1和v2"><span class="nav-number">2.</span> <span class="nav-text">问题解析(v1和v2)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决方案一"><span class="nav-number">3.</span> <span class="nav-text">解决方案一</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决方案二"><span class="nav-number">4.</span> <span class="nav-text">解决方案二</span></a></li></ol></div>
             
           </div>
         </section>
